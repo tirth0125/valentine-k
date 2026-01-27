@@ -1,7 +1,7 @@
 /* ==========================================================
-   gate.js — Lock until Feb 14 00:00 IST + REVEAL splash routing
+   gate.js — Lock until Feb 14 00:00 IST (UTC+05:30)
    - Locked pages redirect to index
-   - First unlocked open (or preview) goes to reveal.html then to target
+   - When unlocked: go directly to target page (home.html by default)
 ========================================================== */
 
 const GATE = {
@@ -13,7 +13,6 @@ const GATE = {
 function getValentineTargetUTC(nowUtcMs) {
   const now = new Date(nowUtcMs);
   const year = now.getUTCFullYear();
-
   const targetThisYear = new Date(Date.UTC(year, 1, 13, 18, 30, 0));
   if (now < targetThisYear) return targetThisYear;
   return new Date(Date.UTC(year + 1, 1, 13, 18, 30, 0));
@@ -36,6 +35,7 @@ function isUnlockedNow() {
 }
 
 function pad2(n) { return String(n).padStart(2, "0"); }
+
 function diffParts(ms) {
   const total = Math.max(0, ms);
   const sec = Math.floor(total / 1000);
@@ -60,62 +60,16 @@ function formatIST(now) {
   return `${y}-${mo}-${d} ${h}:${m}:${s} IST`;
 }
 
-function getISTYear() {
-  const now = new Date();
-  const istMs = now.getTime() + (5.5 * 60 * 60 * 1000);
-  const ist = new Date(istMs);
-  return ist.getUTCFullYear();
-}
-
-function stripPreviewFromCurrent() {
-  const page = (location.pathname || "").split("/").pop() || "home.html";
-  const params = new URLSearchParams(location.search);
-  params.delete("preview");
-  const qs = params.toString();
-  return page + (qs ? "?" + qs : "") + (location.hash || "");
-}
-
-function needsRevealNow() {
-  const year = getISTYear();
-  const preview = hasPreviewAccess();
-
-  try {
-    if (preview) {
-      const k = `val_preview_reveal_${year}`;
-      return !sessionStorage.getItem(k);
-    } else {
-      const k = `val_reveal_${year}`;
-      return !localStorage.getItem(k);
-    }
-  } catch {
-    return true;
-  }
-}
-
 (function bootGate() {
   const unlocked = isUnlockedNow();
-
   const page = (location.pathname || "").split("/").pop() || "index.html";
   const isIndex = page === "" || page === "index.html";
-  const isReveal = page === "reveal.html";
 
-  // If NOT index/reveal and locked -> redirect to index
-  if (!isIndex && !isReveal && !unlocked) {
+  // If user tries to open home/memories early -> redirect to index
+  if (!isIndex && !unlocked) {
     const next = encodeURIComponent(page + location.search + location.hash);
     sessionStorage.setItem("gate_next", next);
     location.replace(`./index.html?next=${next}`);
-    return;
-  }
-
-  // If unlocked and not index and not reveal: force reveal once (or per preview session)
-  if (!isIndex && !isReveal && unlocked && needsRevealNow()) {
-    const params = new URLSearchParams(location.search);
-    const previewVal = params.get("preview"); // keep it if present
-    const to = encodeURIComponent(stripPreviewFromCurrent());
-    const q = new URLSearchParams();
-    q.set("to", to);
-    if (previewVal) q.set("preview", previewVal);
-    location.replace(`./reveal.html?${q.toString()}`);
     return;
   }
 
@@ -130,8 +84,8 @@ function needsRevealNow() {
     const enterBtn = document.getElementById("enterBtn");
 
     const targetUTC = getValentineTargetUTC(Date.now());
-
     const params = new URLSearchParams(location.search);
+
     const nextParam = params.get("next");
     const storedNext = sessionStorage.getItem("gate_next");
     const next = nextParam || storedNext || encodeURIComponent("home.html");
@@ -191,4 +145,3 @@ function needsRevealNow() {
     }
   }
 })();
-
