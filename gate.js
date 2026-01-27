@@ -1,21 +1,29 @@
 /* ==========================================================
    gate.js — Lock until Feb 14 00:00 IST (UTC+05:30)
-   - Locked pages redirect to index
-   - When unlocked: go directly to target page (home.html by default)
+   FIX: prevents redirect loop by persisting "unlocked" flag
 ========================================================== */
 
 const GATE = {
   PREVIEW_MODE: false,
   PREVIEW_SECRET: "iloveher",
+  TEST_TARGET_UTC_MS: null,
 };
 
 // Feb 14 00:00 IST = Feb 13 18:30 UTC
-function getValentineTargetUTC(nowUtcMs) {
-  const now = new Date(nowUtcMs);
-  const year = now.getUTCFullYear();
-  const targetThisYear = new Date(Date.UTC(year, 1, 13, 18, 30, 0));
-  if (now < targetThisYear) return targetThisYear;
-  return new Date(Date.UTC(year + 1, 1, 13, 18, 30, 0));
+function targetUTCForISTYear(yearIST) {
+  return new Date(Date.UTC(yearIST, 1, 13, 18, 30, 0));
+}
+
+function getISTYearNow() {
+  const now = new Date();
+  const istMs = now.getTime() + (5.5 * 60 * 60 * 1000);
+  const ist = new Date(istMs);
+  return ist.getUTCFullYear();
+}
+
+function getTargetUTC() {
+  if (typeof GATE.TEST_TARGET_UTC_MS === "number") return new Date(GATE.TEST_TARGET_UTC_MS);
+  return targetUTCForISTYear(getISTYearNow());
 }
 
 function hasPreviewAccess() {
@@ -28,10 +36,29 @@ function hasPreviewAccess() {
   }
 }
 
+function unlockedKey() {
+  // lock is yearly (IST year), so Feb 14 unlock stays unlocked for that year
+  return `val_unlocked_${getISTYearNow()}`;
+}
+
+function isUnlockedFlagSet() {
+  try {
+    return localStorage.getItem(unlockedKey()) === "1";
+  } catch {
+    return false;
+  }
+}
+
+function setUnlockedFlag() {
+  try {
+    localStorage.setItem(unlockedKey(), "1");
+  } catch {}
+}
+
 function isUnlockedNow() {
   if (hasPreviewAccess()) return true;
-  const target = getValentineTargetUTC(Date.now());
-  return Date.now() >= target.getTime();
+  if (isUnlockedFlagSet()) return true;
+  return Date.now() >= getTargetUTC().getTime();
 }
 
 function pad2(n) { return String(n).padStart(2, "0"); }
@@ -73,6 +100,9 @@ function formatIST(now) {
     return;
   }
 
+  // If unlocked by time, persist it so home/memories never bounce back
+  if (unlocked && !hasPreviewAccess()) setUnlockedFlag();
+
   // Index countdown UI
   if (isIndex) {
     const dd = document.getElementById("dd");
@@ -83,9 +113,7 @@ function formatIST(now) {
     const istStamp = document.getElementById("istStamp");
     const enterBtn = document.getElementById("enterBtn");
 
-    const targetUTC = getValentineTargetUTC(Date.now());
     const params = new URLSearchParams(location.search);
-
     const nextParam = params.get("next");
     const storedNext = sessionStorage.getItem("gate_next");
     const next = nextParam || storedNext || encodeURIComponent("home.html");
@@ -105,6 +133,9 @@ function formatIST(now) {
       if (istStamp) istStamp.textContent = `IST time: ${formatIST(new Date())}`;
 
       if (isUnlockedNow()) {
+        // persist unlock immediately when it hits
+        if (!hasPreviewAccess()) setUnlockedFlag();
+
         if (dd) dd.textContent = "00";
         if (hh) hh.textContent = "00";
         if (mm) mm.textContent = "00";
@@ -116,11 +147,11 @@ function formatIST(now) {
           enterBtn.textContent = "Enter 💘";
         }
         clearInterval(timer);
-        setTimeout(goNext, 650);
+        setTimeout(goNext, 350);
         return;
       }
 
-      const msLeft = targetUTC.getTime() - Date.now();
+      const msLeft = getTargetUTC().getTime() - Date.now();
       const p = diffParts(msLeft);
 
       if (dd) dd.textContent = pad2(p.d);
@@ -135,7 +166,7 @@ function formatIST(now) {
       }
     };
 
-    const timer = setInterval(tick, 1000);
+    const timer = setInterval(tick, 250); // faster checks so it flips instantly
     tick();
 
     if (enterBtn) {
