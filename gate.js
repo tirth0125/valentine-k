@@ -5,7 +5,7 @@
 ========================================================== */
 
 const GATE = {
-  PREVIEW_MODE: true,
+  PREVIEW_MODE: false,
   PREVIEW_SECRET: "iloveher",
 };
 
@@ -191,3 +191,4 @@ function needsRevealNow() {
     }
   }
 })();
+
