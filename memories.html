@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>Memories 📸</title>
+  <link rel="stylesheet" href="./styles.css" />
+</head>
+<body class="page-memories">
+
+  <canvas id="fx" aria-hidden="true"></canvas>
+  <div class="grain" aria-hidden="true"></div>
+
+  <div class="wrap">
+    <div class="card section">
+      <div class="h1">Our <span class="gradText">memories</span></div>
+
+      <div class="collage">
+        <div class="tilePhoto wide">
+          <img src="./assets/p1.jpg" alt="Memory 1" onerror="this.parentElement.classList.add('missing')" />
+        </div>
+        <div class="tilePhoto tall">
+          <img src="./assets/p2.jpg" alt="Memory 2" onerror="this.parentElement.classList.add('missing')" />
+        </div>
+        <div class="tilePhoto">
+          <img src="./assets/p3.jpg" alt="Memory 3" onerror="this.parentElement.classList.add('missing')" />
+        </div>
+        <div class="tilePhoto">
+          <img src="./assets/p4.jpg" alt="Memory 4" onerror="this.parentElement.classList.add('missing')" />
+        </div>
+        <div class="tilePhoto tall">
+          <img src="./assets/p5.jpg" alt="Memory 5" onerror="this.parentElement.classList.add('missing')" />
+        </div>
+        <div class="tilePhoto wide">
+          <img src="./assets/p6.jpg" alt="Memory 6" onerror="this.parentElement.classList.add('missing')" />
+        </div>
+        <div class="tilePhoto">
+          <img src="./assets/p7.jpg" alt="Memory 7" onerror="this.parentElement.classList.add('missing')" />
+        </div>
+        <div class="tilePhoto">
+          <img src="./assets/p8.jpg" alt="Memory 8" onerror="this.parentElement.classList.add('missing')" />
+        </div>
+      </div>
+
+      <p class="muted small" style="margin-top:12px;">
+        If you stare at this long enough, a bunny will definitely run through. Probably.
+      </p>
+    </div>
+  </div>
+
+  <!-- Bottom tabs -->
+  <nav class="tabbar" aria-label="Navigation">
+    <a class="tab" data-tab="home" href="./home.html">Home</a>
+    <a class="tab" data-tab="memories" href="./memories.html"><3></a>
+  </nav>
+
+  <script src="./gate.js"></script>
+  <script src="./app.js"></script>
+</body>
+</html>

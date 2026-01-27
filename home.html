@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>Home 💘</title>
+  <link rel="stylesheet" href="./styles.css" />
+</head>
+<body class="page-home">
+
+  <canvas id="fx" aria-hidden="true"></canvas>
+  <div class="grain" aria-hidden="true"></div>
+  <!-- SPLASH OVERLAY -->
+  <div id="splash" class="splash" aria-hidden="true">
+    <div class="splashCard">
+      <div class="splashInner">
+        <div class="splashTitle">HAPPY<br/>VALENTINE’S<br/>DAY!!!</div>
+        <p class="splashSub">Okay fine… you can enter now 😤💘</p>
+        <p class="splashHint">click anywhere :p </p>
+      </div>
+    </div>
+  </div>
+
+  <div class="wrap">
+    <div class="card section">
+      <div class="pill">💘 Happy Valentine’s Day</div>
+      <div class="h1">Hey <span class="gradText" data-her>Love</span>…</div>
+      <p class="sub" id="hookLine"></p>
+
+      <div class="letterBox">
+        <h2 id="letterTitle">A letter for you 💌</h2>
+        <div class="hr"></div>
+        <div id="letterBody"></div>
+        <div class="hr"></div>
+        <div class="sig" id="letterSig">—</div>
+      </div>
+
+      <p class="muted small" style="margin-top:12px;">
+        Tip: tap anywhere for hearts
+      </p>
+    </div>
+  </div>
+
+  <!-- Bottom tabs -->
+  <nav class="tabbar" aria-label="Navigation">
+    <a class="tab" data-tab="home" href="./home.html">Home</a>
+    <a class="tab" data-tab="memories" href="./memories.html"><3</a>
+  </nav>
+
+  <script src="./gate.js"></script>
+  <script src="./app.js"></script>
+</body>
+</html>

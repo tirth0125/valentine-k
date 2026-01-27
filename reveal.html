@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>HAPPY VALENTINE’S DAY!!!</title>
+  <link rel="stylesheet" href="./styles.css" />
+  <meta name="theme-color" content="#ff4d7d" />
+</head>
+<body>
+  <canvas id="fx" aria-hidden="true"></canvas>
+  <div class="grain" aria-hidden="true"></div>
+
+  <div class="wrap" style="min-height:100vh; display:grid; place-items:center;">
+    <div class="splashCard" style="width:min(420px,100%);">
+      <div class="splashInner">
+        <div class="splashTitle">HAPPY<br/>VALENTINE’S<br/>DAY!!!</div>
+        <p class="splashSub">Okay okay… now you can enter 😤</p>
+      </div>
+    </div>
+  </div>
+
+  <script src="./gate.js"></script>
+  <script src="./app.js"></script>
+  <script>
+    (function () {
+      // mark reveal as shown, then go to target page
+      const params = new URLSearchParams(location.search);
+      const to = params.get("to") ? decodeURIComponent(params.get("to")) : "home.html";
+
+      // IST year key (same logic as gate.js)
+      const now = new Date();
+      const istMs = now.getTime() + (5.5 * 60 * 60 * 1000);
+      const ist = new Date(istMs);
+      const year = ist.getUTCFullYear();
+
+      const hasPreview = params.has("preview");
+      const key = hasPreview ? `val_preview_reveal_${year}` : `val_reveal_${year}`;
+
+      try {
+        if (hasPreview) sessionStorage.setItem(key, "1");
+        else localStorage.setItem(key, "1");
+      } catch {}
+
+      // small extra burst feels loud
+      setTimeout(() => {
+        // (app.js already spawns bunnies + hearts on click; this is just timing)
+        document.body.dispatchEvent(new PointerEvent("pointerdown", { clientX: innerWidth/2, clientY: innerHeight/3 }));
+      }, 200);
+
+      setTimeout(() => {
+        location.replace("./" + to.replace(/^\.\//, ""));
+      }, 2100);
+    })();
+  </script>
+</body>
+</html>

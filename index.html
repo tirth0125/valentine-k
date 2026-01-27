@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>Locked 💌</title>
+  <link rel="stylesheet" href="./styles.css" />
+  <meta name="theme-color" content="#ff4d7d" />
+</head>
+<body>
+  <canvas id="fx" aria-hidden="true"></canvas>
+  <div class="grain" aria-hidden="true"></div>
+
+  <div class="wrap">
+    <div class="card" style="padding:16px;">
+      <div class="pill">🔒 Opens on 14 Feb (IST)</div>
+
+      <div class="h1">Not yet 😤 <span class="gradText">wait.</span></div>
+      <p class="sub">
+        This is locked until <b>Feb 14, 00:00 IST</b>.  
+        The timer is the boss right now.
+      </p>
+
+      <div class="countdown" role="timer" aria-live="polite">
+        <div class="cdBox"><div id="dd" class="cdNum">--</div><div class="cdLbl">Days</div></div>
+        <div class="cdSep">:</div>
+        <div class="cdBox"><div id="hh" class="cdNum">--</div><div class="cdLbl">Hours</div></div>
+        <div class="cdSep">:</div>
+        <div class="cdBox"><div id="mm" class="cdNum">--</div><div class="cdLbl">Min</div></div>
+        <div class="cdSep">:</div>
+        <div class="cdBox"><div id="ss" class="cdNum">--</div><div class="cdLbl">Sec</div></div>
+      </div>
+
+      <p class="sub" id="lockMsg" style="margin-top:10px;">✨ Come back when it hits zero.</p>
+      <p class="muted small" id="istStamp">IST time: --</p>
+    </div>
+  </div>
+
+  <script src="./gate.js"></script>
+  <script src="./app.js"></script>
+</body>
+</html>

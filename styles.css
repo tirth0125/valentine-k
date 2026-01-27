@@ -1,0 +1,419 @@
+:root{
+  --bg1:#03060e;          /* midnight */
+  --bg2:#071a1f;          /* deep teal */
+  --accent:#ff6a9c;       /* warm gold */
+  --accent2:#ff62d0;      /* mint glow */
+  --rose:#ff6fa1;         /* soft rose */
+  --violet:#8b7bff;       /* violet */
+  --text:#f7f6f2;         /* warm ivory */
+  --muted:rgba(247,246,242,.78);
+  --stroke:rgba(247,246,242,.14);
+  --shadow: 0 22px 70px rgba(0,0,0,.55);
+}
+
+*{box-sizing:border-box}
+html,body{height:100%}
+body{
+  margin:0;
+  color:var(--text);
+  font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+  background:
+    radial-gradient(900px 600px at 15% 10%, rgba(98,255,224,.18), transparent 60%),
+    radial-gradient(800px 560px at 85% 12%, rgba(255,211,106,.14), transparent 62%),
+    radial-gradient(900px 650px at 50% 92%, rgba(255,111,161,.10), transparent 66%),
+    linear-gradient(180deg, var(--bg1), var(--bg2));
+  overflow-x:hidden;
+  padding-bottom: calc(84px + env(safe-area-inset-bottom));
+}
+
+
+canvas#fx{
+  position:fixed; inset:0;
+  width:100%; height:100%;
+  z-index:0;
+}
+
+.grain{
+  position:fixed; inset:0;
+  z-index:1;
+  pointer-events:none;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.7' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)' opacity='.25'/%3E%3C/svg%3E");
+  mix-blend-mode:overlay;
+  opacity:.10;
+}
+
+.wrap{
+  width: min(420px, 100%); /* iPhone 14 portrait friendly */
+  margin: 0 auto;
+  padding: 18px 16px;
+  position:relative;
+  z-index:3;
+}
+
+.card{
+  background: linear-gradient(180deg, rgba(255,255,255,.12), rgba(255,255,255,.06));
+  border:1px solid var(--stroke);
+  border-radius: 22px;
+  box-shadow: var(--shadow);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+}
+
+.pill{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  padding:10px 14px;
+  border-radius:999px;
+  border:1px solid rgba(255,255,255,.14);
+  background: rgba(0,0,0,.22);
+  font-weight: 900;
+  letter-spacing:.2px;
+}
+
+.h1{
+  margin: 14px 0 10px;
+  font-size: clamp(30px, 7.4vw, 52px);
+  line-height: 1.02;
+  letter-spacing: -.6px;
+}
+
+.gradText{
+  background: linear-gradient(90deg, #fff, rgba(255, 108, 199, 0.98), rgba(98,255,224,.98));
+  -webkit-background-clip:text;
+  background-clip:text;
+  color:transparent;
+  text-shadow: 0 12px 40px rgba(255,211,106,.10);
+  font-weight: 950;
+}
+
+
+.sub{
+  margin:0;
+  color: rgba(255,255,255,.84);
+  font-size: 16px;
+  line-height: 1.55;
+}
+
+.muted{ color: rgba(255,255,255,.70); }
+.small{ font-size: 13px; }
+
+.btnRow{
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+  margin-top: 14px;
+}
+
+.btn{
+  border:1px solid rgba(255,255,255,.16);
+  background: rgba(255,255,255,.08);
+  color: var(--text);
+  padding: 12px 14px;
+  border-radius: 14px;
+  font-weight: 900;
+  cursor:pointer;
+  transition: transform .12s ease, background .2s ease, border-color .2s ease;
+  user-select:none;
+}
+.btn:hover{ transform: translateY(-1px); background: rgba(255,255,255,.12); border-color: rgba(255,255,255,.22); }
+.btn:active{ transform: translateY(0) scale(.99); }
+.btn.primary{
+  background: linear-gradient(135deg, rgba(255, 106, 181, 0.92), rgba(233, 31, 216, 0.58));
+  border-color: rgba(247,246,242,.20);
+  color: rgba(3,6,14,.92);
+  box-shadow: 0 16px 40px rgba(255,211,106,.16);
+}
+
+.btn:disabled{ opacity:.6; cursor:not-allowed; transform:none; }
+
+/* Countdown (index) */
+.countdown{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:8px;
+  padding: 14px 8px;
+  margin: 14px 0 10px;
+  border-radius: 18px;
+  background: rgba(0,0,0,.20);
+  border:1px solid rgba(255,255,255,.10);
+}
+.cdBox{
+  min-width: 72px;
+  padding: 10px 10px;
+  border-radius: 16px;
+  background: rgba(255,255,255,.06);
+  border:1px solid rgba(255,255,255,.10);
+  text-align:center;
+}
+.cdNum{ font-size: 30px; font-weight: 950; letter-spacing:.6px; }
+.cdLbl{ font-size: 12px; color: var(--muted); margin-top: 2px; }
+.cdSep{ opacity:.65; font-weight:900; font-size:20px; }
+
+/* Floral frame (white roses + orchids) */
+.floral-frame{
+  position:fixed;
+  inset:0;
+  pointer-events:none;
+  z-index: 1; /* BACK (behind content + tabs) */
+  opacity: .65; /* softer in background */
+}
+
+.flower{
+  position:absolute;
+  width: 92px;
+  height: 92px;
+  opacity:.55; /* softer */
+  filter:
+    blur(.3px)
+    drop-shadow(0 12px 22px rgba(0,0,0,.25));
+  animation: floaty 7.4s ease-in-out infinite;
+}
+
+.flower.orchid{ animation-duration: 7.6s; opacity:.88; }
+@keyframes floaty{
+  0%,100%{ transform: translateY(0) rotate(0deg); }
+  50%{ transform: translateY(-10px) rotate(2deg); }
+}
+.f1{ top:10px; left:10px; }
+.f2{ top:10px; right:10px; transform: scaleX(-1); }
+.f3{ bottom: calc(84px + env(safe-area-inset-bottom) + 10px); left:10px; transform: rotate(8deg); }
+.f4{ bottom: calc(84px + env(safe-area-inset-bottom) + 10px); right:10px; transform: scaleX(-1) rotate(8deg); }
+
+/* Bottom tab bar (mobile first) */
+.tabbar{
+  position: fixed;
+  left: 12px;
+  right: 12px;
+  bottom: calc(10px + env(safe-area-inset-bottom));
+  z-index: 4;
+  border-radius: 18px;
+  border: 1px solid rgba(255,255,255,.16);
+  background: rgba(0,0,0,.30);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  box-shadow: 0 16px 40px rgba(0,0,0,.35);
+  padding: 10px 10px;
+  display:flex;
+  justify-content:space-between;
+  gap: 10px;
+}
+
+.tab{
+  flex:1;
+  text-decoration:none;
+  color: rgba(255,255,255,.88);
+  border: 1px solid rgba(255,255,255,.12);
+  background: rgba(255,255,255,.06);
+  border-radius: 14px;
+  padding: 12px 10px;
+  font-weight: 950;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap: 8px;
+  transition: transform .12s ease, background .2s ease;
+}
+.tab:hover{ transform: translateY(-1px); background: rgba(255,255,255,.10); }
+.tab.active{
+  background: linear-gradient(135deg, rgba(255,211,106,.20), rgba(98,255,224,.14));
+  border-color: rgba(247,246,242,.18);
+}
+
+
+/* Home content */
+.section{
+  padding: 16px;
+}
+
+.letterBox{
+  margin-top: 14px;
+  padding: 16px;
+  border-radius: 20px;
+  border:1px solid rgba(255,255,255,.12);
+  background: rgba(0,0,0,.22);
+  line-height: 1.65;
+  font-size: 15.5px;
+  color: rgba(255,255,255,.88);
+}
+
+.letterBox h2{
+  margin:0 0 10px;
+  font-size: 18px;
+  font-weight: 950;
+}
+.hr{
+  height:1px;
+  background: rgba(255,255,255,.12);
+  margin: 12px 0;
+}
+.sig{
+  font-weight: 950;
+  color: rgba(255,143,185,.96);
+}
+
+/* Memories collage */
+.collage{
+  display:grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+  margin-top: 14px;
+}
+.tilePhoto{
+  border-radius: 18px;
+  overflow:hidden;
+  border: 1px solid rgba(255,255,255,.12);
+  background: rgba(255,255,255,.06);
+  position:relative;
+}
+.tilePhoto img{
+  width:100%;
+  height: 100%;
+  object-fit: cover;
+  display:block;
+  aspect-ratio: 1 / 1;
+}
+.tilePhoto.tall img{ aspect-ratio: 1 / 1.35; }
+.tilePhoto.wide{ grid-column: span 2; }
+.tilePhoto.wide img{ aspect-ratio: 2 / 1.12; }
+
+.tilePhoto.missing::before{
+  content:"📷 Add photo";
+  display:grid;
+  place-items:center;
+  height: 140px;
+  font-weight: 950;
+  color: rgba(255,255,255,.84);
+}
+.tilePhoto.missing img{ display:none; }
+
+/* Bunnies */
+.bunny{
+  position:fixed;
+  z-index: 1; /* BACK */
+  width: 74px;
+  height: 74px;
+  pointer-events:none;
+  filter: blur(.2px) drop-shadow(0 10px 18px rgba(0,0,0,.25));
+  opacity: .45; /* background vibe */
+}
+
+.bunny.hopRight{ left:-90px; animation: runRight linear forwards; }
+.bunny.hopLeft{ right:-90px; transform: scaleX(-1); animation: runLeft linear forwards; }
+
+@keyframes runRight{
+  0%{ transform: translateX(0) translateY(0); }
+  12%{ transform: translateX(16vw) translateY(-12px); }
+  24%{ transform: translateX(30vw) translateY(0); }
+  36%{ transform: translateX(46vw) translateY(-14px); }
+  48%{ transform: translateX(60vw) translateY(0); }
+  60%{ transform: translateX(74vw) translateY(-16px); }
+  72%{ transform: translateX(88vw) translateY(0); }
+  100%{ transform: translateX(130vw) translateY(0); }
+}
+@keyframes runLeft{
+  0%{ transform: scaleX(-1) translateX(0) translateY(0); }
+  12%{ transform: scaleX(-1) translateX(-16vw) translateY(-12px); }
+  24%{ transform: scaleX(-1) translateX(-30vw) translateY(0); }
+  36%{ transform: scaleX(-1) translateX(-46vw) translateY(-14px); }
+  48%{ transform: scaleX(-1) translateX(-60vw) translateY(0); }
+  60%{ transform: scaleX(-1) translateX(-74vw) translateY(-16px); }
+  72%{ transform: scaleX(-1) translateX(-88vw) translateY(0); }
+  100%{ transform: scaleX(-1) translateX(-130vw) translateY(0); }
+}
+
+/* Desktop enhancement (optional) */
+@media (min-width: 920px){
+  body{ padding-bottom: 0; }
+  .wrap{
+  width: min(420px, 100%);
+  margin: 0 auto;
+  padding: 18px 16px;
+  position:relative;
+  z-index: 3; /* ABOVE bunnies/flowers */
+}
+
+  .tabbar{
+    position: sticky;
+    bottom:auto;
+    top: 14px;
+    margin: 16px auto 0;
+    left:auto; right:auto;
+    width: min(980px, 100%);
+    z-index: 4;
+  }
+  .flower{ width: 120px; height: 120px; }
+  .f3,.f4{ bottom: 10px; }
+  .collage{ grid-template-columns: repeat(4, 1fr); }
+  .tilePhoto.wide{ grid-column: span 2; }
+}
+
+/* Splash card used by reveal.html */
+.splashCard{
+  border-radius: 26px;
+  border: 1px solid rgba(255,255,255,.18);
+  background: linear-gradient(180deg, rgba(255,255,255,.14), rgba(255,255,255,.06));
+  box-shadow: 0 28px 90px rgba(0,0,0,.55);
+  padding: 18px 16px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+.splashCard::before{
+  content:"";
+  position:absolute;
+  inset:-80px;
+  background:
+    radial-gradient(260px 220px at 18% 18%, rgba(255,77,125,.32), transparent 60%),
+    radial-gradient(260px 220px at 88% 18%, rgba(164,123,255,.26), transparent 62%),
+    radial-gradient(300px 240px at 50% 86%, rgba(98,255,224,.12), transparent 65%);
+  opacity:.95;
+}
+.splashInner{ position: relative; z-index: 1; }
+.splashTitle{
+  margin: 6px 0 10px;
+  font-weight: 1000;
+  letter-spacing: -1px;
+  line-height: 1.02;
+  font-size: clamp(34px, 10vw, 56px);
+  text-transform: uppercase;
+  color: transparent;
+  background: linear-gradient(90deg, #fff, rgba(255,143,185,.98), rgba(164,123,255,.98));
+  -webkit-background-clip: text;
+  background-clip: text;
+  text-shadow: 0 18px 60px rgba(255,77,125,.22), 0 8px 26px rgba(255,255,255,.10);
+  animation: splashPop .9s ease both, splashWobble 1.6s ease-in-out .15s infinite;
+}
+.splashSub{ margin: 0; font-size: 14px; color: rgba(255,255,255,.86); }
+.splashHint{ margin-top: 12px; font-size: 12px; color: rgba(255,255,255,.72); }
+@keyframes splashPop{ 0%{ transform: scale(.72); opacity:.2; } 60%{ transform: scale(1.06); opacity:1; } 100%{ transform: scale(1); } }
+@keyframes splashWobble{ 0%,100%{ transform: rotate(0deg) translateY(0); } 50%{ transform: rotate(1.2deg) translateY(-1px); } }
+
+/* ========= PAGE BACKGROUND IMAGES (FIXED) ========= */
+/* Key: url(...) comes FIRST so it can't be hidden by opaque layers */
+
+body.page-home{
+  background:
+    url("./assets/bg-home.jpg") center/cover no-repeat fixed,
+    radial-gradient(900px 600px at 15% 10%, rgba(98,255,224,.18), transparent 60%),
+    radial-gradient(800px 560px at 85% 12%, rgba(255,211,106,.14), transparent 62%),
+    radial-gradient(900px 650px at 50% 92%, rgba(255,111,161,.10), transparent 66%),
+    linear-gradient(180deg, rgba(3,6,14,.72), rgba(7,26,31,.82));
+}
+
+body.page-memories{
+  background:
+    url("./assets/bg-memories.jpg") center/cover no-repeat fixed,
+    radial-gradient(900px 600px at 15% 10%, rgba(255,211,106,.12), transparent 60%),
+    radial-gradient(800px 560px at 85% 12%, rgba(98,255,224,.12), transparent 62%),
+    radial-gradient(900px 650px at 50% 92%, rgba(139,123,255,.10), transparent 66%),
+    linear-gradient(180deg, rgba(3,6,14,.72), rgba(7,26,31,.82));
+}
+
+/* iPhone Safari sometimes ignores "fixed" backgrounds; fallback */
+@supports (-webkit-touch-callout: none) {
+  body.page-home, body.page-memories{
+    background-attachment: scroll, scroll, scroll, scroll, scroll;
+  }
+}
