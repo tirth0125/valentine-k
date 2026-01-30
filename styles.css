@@ -431,3 +431,295 @@ body.page-memories{
     background-attachment: scroll, scroll, scroll, scroll, scroll;
   }
 }
+/* =========================
+   QUIZ GATE
+========================= */
+.quizGate{
+  position: relative;
+  overflow: visible;
+}
+
+.quizTop{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap: 12px;
+  margin-bottom: 10px;
+}
+
+.quizTitle{
+  font-weight: 950;
+  letter-spacing: .2px;
+  font-size: 16px;
+}
+
+.quizProg{
+  font-size: 12px;
+  color: rgba(255,255,255,.78);
+  padding: 6px 10px;
+  border-radius: 999px;
+  background: rgba(255,255,255,.08);
+  border: 1px solid rgba(255,255,255,.12);
+}
+
+.quizQ{
+  font-size: clamp(16px, 4.4vw, 18px);
+  line-height: 1.35;
+  margin: 10px 0 14px;
+  color: rgba(255,255,255,.92);
+}
+
+.quizButtons{
+  position: relative;
+  display:flex;
+  gap: 12px;
+  align-items:center;
+  justify-content: center;
+  padding: 10px 4px 18px;
+  min-height: 82px; /* space for the escaping No */
+}
+
+.quizBtn{
+  min-width: 132px;
+}
+
+.noBtn{
+  position: relative;
+  will-change: transform, left, top, opacity;
+  transition: transform .18s ease, left .18s ease, top .18s ease, opacity .18s ease;
+}
+
+.quizHint{
+  text-align:center;
+  font-size: 12px;
+  color: rgba(255,255,255,.72);
+}
+
+/* Lock tabbar until quiz is done */
+.tabbar.locked{
+  pointer-events:none;
+  opacity:.55;
+  filter: saturate(.85);
+}
+
+/* fun micro animation on Yes */
+.quizYesPop{
+  animation: yesPop .22s ease;
+}
+@keyframes yesPop{
+  0%{ transform: scale(1); }
+  50%{ transform: scale(1.06); }
+  100%{ transform: scale(1); }
+}
+
+body.quiz-mode #homeMain{
+  display:none !important;
+}
+/* =========================
+   QUIZ = FIXED CENTER MODAL (iPhone 14 portrait)
+========================= */
+body.quiz-mode{
+  overflow: hidden; /* no scrolling while quiz is active */
+}
+
+/* dim overlay so bunnies/background don't clutter the quiz */
+body.quiz-mode::before{
+  content:"";
+  position: fixed;
+  inset: 0;
+  z-index: 25;
+  background: rgba(0,0,0,.35);
+  backdrop-filter: blur(2px);
+  -webkit-backdrop-filter: blur(2px);
+}
+
+/* Force quiz card to center of the screen */
+#quizGate.quizGate{
+  position: fixed !important;
+  left: 50% !important;
+  top: 50% !important;
+  transform: translate(-50%, -50%) !important;
+
+  width: min(390px, calc(100vw - 28px));
+  max-width: 390px;
+  margin: 0 !important;
+
+  z-index: 30 !important; /* above overlay */
+}
+
+/* Make quiz card less transparent so bunnies don't show through */
+#quizGate.quizGate.card{
+  background: rgba(0,0,0,.55);
+  border: 1px solid rgba(255,255,255,.14);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+/* Hide tabbar during quiz (if present) */
+body.quiz-mode .tabbar{
+  display:none !important;
+}
+body.quiz-mode #quizGate{
+  overflow: visible !important;
+}
+/* =========================
+   QUIZ VISUAL UPGRADE (paste at END)
+========================= */
+
+/* slightly softer overlay + nicer focus */
+body.quiz-mode::before{
+  background: rgba(0,0,0,.42) !important;
+  backdrop-filter: blur(4px) !important;
+  -webkit-backdrop-filter: blur(4px) !important;
+}
+
+/* make background elements calm down during quiz */
+body.quiz-mode .bunny,
+body.quiz-mode .floral-frame{
+  opacity: .22 !important;
+  filter: blur(.6px) drop-shadow(0 8px 18px rgba(0,0,0,.22)) !important;
+}
+
+/* quiz modal card polish */
+#quizGate.quizGate.card{
+  padding: 16px 16px 14px !important;
+  border-radius: 24px !important;
+  background: rgba(0,0,0,.58) !important;
+  box-shadow: 0 30px 100px rgba(0,0,0,.62) !important;
+  border: 1px solid rgba(255,255,255,.14) !important;
+  position: relative !important;
+  overflow: visible !important;
+}
+
+/* glowing gradient border */
+#quizGate.quizGate.card::after{
+  content:"";
+  position:absolute;
+  inset:-1px;
+  border-radius: 26px;
+  padding: 1px;
+  background: linear-gradient(135deg,
+    rgba(255,106,181,.55),
+    rgba(233,31,216,.35),
+    rgba(98,255,224,.18)
+  );
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events:none;
+  opacity:.85;
+}
+
+/* header layout */
+.quizTop{
+  margin-bottom: 12px !important;
+}
+
+.quizTitle{
+  font-size: 17px !important;
+  font-weight: 1000 !important;
+  letter-spacing: -.2px !important;
+  display:flex;
+  align-items:center;
+  gap: 8px;
+}
+
+.quizTitle::before{
+  content:"💘";
+  font-size: 16px;
+  transform: translateY(-1px);
+}
+
+/* progress pill */
+.quizProg{
+  font-size: 12px !important;
+  font-weight: 950 !important;
+  color: rgba(255,255,255,.86) !important;
+  background: rgba(255,255,255,.08) !important;
+  border: 1px solid rgba(255,255,255,.12) !important;
+  padding: 6px 10px !important;
+}
+
+/* question text: cleaner and more centered */
+.quizQ{
+  margin: 6px 0 14px !important;
+  line-height: 1.42 !important;
+  font-weight: 850 !important;
+  letter-spacing: -.2px !important;
+  text-align: left !important;
+}
+
+/* buttons: grid layout, equal sizes */
+.quizButtons{
+  display:grid !important;
+  grid-template-columns: 1fr 1fr !important;
+  gap: 12px !important;
+  padding: 8px 0 10px !important;
+  min-height: 74px !important;
+}
+
+.quizBtn{
+  min-width: 0 !important;
+  width: 100% !important;
+  height: 48px !important;
+  border-radius: 16px !important;
+}
+
+/* make YES look more “main character” */
+#yesBtn.btn.primary{
+  background: linear-gradient(135deg, rgba(255,106,181,.95), rgba(233,31,216,.55)) !important;
+  color: rgba(3,6,14,.94) !important;
+  box-shadow: 0 18px 44px rgba(255,106,181,.18) !important;
+  border-color: rgba(255,255,255,.14) !important;
+}
+
+/* NO button nicer (still dodges per your JS) */
+#noBtn.btn{
+  background: rgba(255,255,255,.07) !important;
+  border-color: rgba(255,255,255,.14) !important;
+}
+
+/* hint becomes a soft pill */
+.quizHint{
+  margin-top: 10px !important;
+  padding: 8px 10px;
+  border-radius: 999px;
+  background: rgba(255,255,255,.06);
+  border: 1px solid rgba(255,255,255,.10);
+  color: rgba(255,255,255,.78) !important;
+}
+
+/* iPhone small tweak */
+@media (max-width: 420px){
+  #quizGate.quizGate{
+    width: calc(100vw - 22px) !important;
+  }
+  #quizGate.quizGate.card{
+    padding: 14px 14px 12px !important;
+  }
+  .quizBtn{
+    height: 46px !important;
+  }
+}
+/* NO when it escapes in Q1 (portal button) */
+.noPortalBtn{
+  width: 140px !important;
+  height: 46px !important;
+  min-width: 140px !important;
+  border-radius: 16px !important;
+  padding: 12px 14px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  white-space: nowrap !important;
+}
+
+/* If NO turns into YES in Q3, make it look like primary */
+#noBtn.primary{
+  background: linear-gradient(135deg, rgba(255,106,181,.95), rgba(233,31,216,.55)) !important;
+  border-color: rgba(255,255,255,.14) !important;
+  color: rgba(3,6,14,.94) !important;
+  box-shadow: 0 18px 44px rgba(255,106,181,.18) !important;
+}
