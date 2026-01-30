@@ -409,7 +409,7 @@ canvas#fx{
 
 body.page-home{
   background:
-    url("./assets/bg-home.jpg") center/cover no-repeat fixed,
+    url("./assets/bg-home1.jpg") center/cover no-repeat fixed,
     radial-gradient(900px 600px at 15% 10%, rgba(98,255,224,.18), transparent 60%),
     radial-gradient(800px 560px at 85% 12%, rgba(255,211,106,.14), transparent 62%),
     radial-gradient(900px 650px at 50% 92%, rgba(255,111,161,.10), transparent 66%),
@@ -723,3 +723,4 @@ body.quiz-mode .floral-frame{
   color: rgba(3,6,14,.94) !important;
   box-shadow: 0 18px 44px rgba(255,106,181,.18) !important;
 }
+
