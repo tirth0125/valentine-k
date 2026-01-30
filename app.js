@@ -30,7 +30,7 @@ const PERSONAL = {
     "as im constantly trying to improve the relationship at any cost before ldr ends or else it would be a bigger nightmare irl i hope u get what i mean. ",
     "You’re my favorite decision and my favorite person. Happy Valentines Day <3",
  
-    "Now enjoy the flowers and the random hopping rabbits across the screen if u can see them lol.",
+    "Now enjoy the flowers and the random hopping rabbits across the screen if u can see them lol, forever won't be a lie babe",
  
     "Never yours,",
   ],
