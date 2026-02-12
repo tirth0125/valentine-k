@@ -4,7 +4,7 @@
 ========================================================== */
 
 const GATE = {
-  PREVIEW_MODE: false,
+  PREVIEW_MODE: true,
   PREVIEW_SECRET: "iloveher",
   TEST_TARGET_UTC_MS: null,
 };
@@ -176,3 +176,4 @@ function formatIST(now) {
     }
   }
 })();
+
